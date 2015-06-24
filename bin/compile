@@ -1,0 +1,24 @@
+#! /bin/bash
+
+set -e
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+SOURCE_LIST=`dirname $0`/../etc/sources.list
+
+indent() {
+  sed -u 's/^/       /'
+}
+
+arrow() {
+  sed -u 's/^/-----> /'
+}
+
+APT_OPTIONS="-o debug::nolocking=true -o Dir::Etc::SourceList=$SOURCE_LIST"
+
+echo "Updating apt-get" | arrow
+apt-get $APT_OPTIONS update | indent
+
+echo "Installing libqt4-dev" | arrow
+apt-get $APT_OPTIONS install g++ libqt4-dev -y | indent
+
